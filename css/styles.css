@@ -3,7 +3,7 @@
 
 body,td,th,p{
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 10pt;
+	font-size: 12pt;
 	color: #333;
 	line-height: 1.5;
 }
@@ -16,8 +16,8 @@ header {
   display: flex;  
 }
 ul, li {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 10pt;
+	font-family: inherit;
+	font-size: inherit;
 	color: #333;
 }
 a {
@@ -32,7 +32,7 @@ a img{
 	border: none 0px #fff;
 }
 h1, h2, h3, h4, h5, h6 {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: inherit;
   margin: 0 0 20px;
 }
 article, aside, canvas, details, figcaption, figure, footer, hgroup, menu, nav, section {
@@ -45,7 +45,7 @@ article, aside, canvas, details, figcaption, figure, footer, hgroup, menu, nav, 
 #footer {
   background-color: #444;
   color: #aaa;
-  font-size: 8pt;
+  font-size: 0.8em;
   letter-spacing: 1px;
   padding: 25px;
   text-align: center;
@@ -63,7 +63,7 @@ nav h1 {
 }
 nav h1 a {
   color: #fff;
-  font-size: 14pt;
+  font-size: 0.8em;
   font-weight: 200;
   letter-spacing: 10px;
   line-height: 4.2em;
