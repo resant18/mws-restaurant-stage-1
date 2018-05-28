@@ -35,6 +35,7 @@
         width: auto;        
         padding: 0;
         margin: 0;
+        box-shadow: none;
     }
     .inside #map {
         height: 60vw;
