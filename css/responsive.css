@@ -34,9 +34,17 @@
     .inside #map-container {
         width: auto;        
         padding: 0;
+        margin: 0;
     }
     .inside #map {
         height: 60vw;
+    }
+
+    .inside #restaurant-info {
+        margin-right: 13px;
+    }
+    .inside #restaurant-photo-container {
+        margin: 13px;
     }
     
 }
