@@ -32,10 +32,13 @@
         /* padding: 10px; */
     }
     .inside #map-container {
-        width: auto;
-        min-height: 50vw;
+        width: auto;        
         padding: 0;
     }
+    .inside #map {
+        height: 60vw;
+    }
+    
 }
 /*@media (min-width: 700px) {
     #map-container {

@@ -66,7 +66,7 @@ nav h1 a {
   text-transform: uppercase;
 }
 #breadcrumb {
-    padding: 15px 0;
+    padding: 10px 0;
     list-style: none;
     background-color: #eee;    
     max-width: 960px;
@@ -101,8 +101,8 @@ nav h1 a {
 }
 /* ====================== Map ====================== */
 #map {
-  height: 60vw;
-  width: 100vw; 
+  width: 100%;    
+  height: 400px;
   background-color: #ccc;
 }
 /* ====================== Restaurant Filtering ====================== */
@@ -220,15 +220,13 @@ nav h1 a {
 #restaurant-hours-wrapper {  
   grid-area: restaurant-hours-wrapper;
 }
-.inside #map-container {  
-  padding: 15px;
+.inside #map-container { 
   position: relative; 
   grid-area: map-container;
 }
-.inside #map {
-  background-color: #ccc;    
-  min-height: 80%;
-  width: auto;    
+.inside #map { 
+  background-color: #ccc;      
+  height: 100%;
 }
 .inside #footer {  
   grid-area: footer
