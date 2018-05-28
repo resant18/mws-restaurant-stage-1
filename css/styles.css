@@ -8,7 +8,7 @@ body,td,th,p{
 	line-height: 1.375;
 }
 body {
-	background-color: #fdfdfd;
+  background: url(../img/white_carbonfiber.png) repeat; 
 	margin: 0;
 	position:relative;
 }
@@ -36,8 +36,14 @@ article, aside, canvas, details, figcaption, figure, footer, hgroup, menu, nav, 
 	display: block;
 }
 #maincontent {
-  background-color: #f3f3f3;
+  background: url(../img/white_carbonfiber.png) repeat;
   min-height: 100%;
+}
+.inside #maincontent {
+  background: none;
+}
+.inside #maincontent section {
+  background-color: #f3f3f3;
 }
 #footer {
   background-color: #444;
@@ -133,7 +139,6 @@ nav h1 a {
 
 /* ====================== Restaurant Listing ====================== */
 #restaurants-list {
-  background-color: #f3f3f3;
   list-style: outside none none;
   margin: 0;
   padding: 20px 15px 60px;
