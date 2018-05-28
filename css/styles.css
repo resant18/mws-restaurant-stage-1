@@ -245,7 +245,7 @@ nav h1 a {
 #restaurant-name {
   color: #f18200;
   font-family: Arial,sans-serif;
-  font-size: 20pt;
+  font-size: 2.5em;
   font-weight: 200;
   letter-spacing: 0;    
   line-height: 1.1;
@@ -312,3 +312,11 @@ nav h1 a {
   -webkit-box-shadow: 0px 2px 21px rgba(0, 0, 0, 0.36);
   -moz-box-shadow: 0px 2px 21px rgba(0, 0, 0, 0.36);
 }
+
+/* ====================== Styling Heading ====================== */
+#maincontent h3 {
+  border-bottom: 1px solid #cecece;
+  padding-bottom: 10px;
+  font-size: 1.2em;
+}
+
