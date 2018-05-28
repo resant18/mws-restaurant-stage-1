@@ -33,16 +33,16 @@
     }
     .inside #map-container {
         width: auto;       
-        margin-left: 13px;                 
     }
     .inside #map {
         height: 60vw;
     }
 
-    .inside #restaurant-info {
-        margin-right: 13px;
-    }
-    .inside #restaurant-photo-container {
+    .inside #restaurant-info,
+    .inside #restaurant-photo-container,
+    .inside #map-container,
+    .inside #restaurant-hours-wrapper,
+    .inside #reviews-container {
         margin: 13px;
     }
     
