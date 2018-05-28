@@ -199,7 +199,7 @@ nav h1 a {
 .inside #maincontent {
   display: grid;
   grid-area: main-content;
-  grid-template-columns: repeat(2, [col] auto);
+  grid-template-columns: repeat(2, [col] 50%);
   grid-template-rows: repeat(4, [row] auto);
   grid-template-areas:     
     "restaurant-info restaurant-photo-container"
@@ -272,7 +272,8 @@ nav h1 a {
 }
 
 #reviews-container {
-  padding: 30px 40px 80px;
+  margin: 13px;
+  padding: 15px;
   grid-area: reviews-container;
 }
 #reviews-container h2 {
@@ -288,17 +289,29 @@ nav h1 a {
 }
 #reviews-list li {
   background-color: #fff;
-    border: 2px solid #f3f3f3;
+  border: 2px solid #f3f3f3;
   display: block;
   list-style-type: none;
-  margin: 0 0 30px;
+  margin: 0 auto 30px;
   overflow: hidden;
-  padding: 0 20px 20px;
+  padding: 20px;
   position: relative;
-  width: 85%;
+  width: 75%;
 }
 #reviews-list li p {
   margin: 0 0 10px;
+}
+#reviews-list li p.revname {
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-bottom: 5px;
+}
+#reviews-list li p.revdate {
+  font-size: 0.8em;
+  color: #696464;  
+}
+span.checked {
+  color: #f18200;
 }
 #restaurant-hours td {
   color: #666;
@@ -307,7 +320,8 @@ nav h1 a {
 /* ====================== Styling Shadow Box ====================== */
 #restaurants-list li,
 #restaurant-hours-wrapper,
-.inside #map-container {
+.inside #map-container,
+.inside #reviews-container {
   box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.36);
   -webkit-box-shadow: 0px 2px 21px rgba(0, 0, 0, 0.36);
   -moz-box-shadow: 0px 2px 21px rgba(0, 0, 0, 0.36);
