@@ -1,4 +1,4 @@
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     body {
         line-height: 1.25em;
     }
@@ -21,10 +21,10 @@
     .inside #maincontent {        
         grid-template-columns: auto;
         grid-template-rows: repeat(4, [row] auto);
-        grid-template-areas:
-          "map-container"     
+        grid-template-areas:               
           "restaurant-photo-container"
           "restaurant-info"
+          "map-container"
           "restaurant-hours-wrapper"
           "reviews-container";
         max-width: 960px;
@@ -32,10 +32,8 @@
         /* padding: 10px; */
     }
     .inside #map-container {
-        width: auto;        
-        padding: 0;
-        margin: 0;
-        box-shadow: none;
+        width: auto;       
+        margin-left: 13px;                 
     }
     .inside #map {
         height: 60vw;
