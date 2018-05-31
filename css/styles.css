@@ -219,10 +219,13 @@ nav h1 a {
   margin: 13px 0 0;
   padding: 15px;
   text-align: center;
-  grid-area: restaurant-info;
+  grid-area: restaurant-info;  
 }
 #restaurant-address {
   font-weight: 700;
+}
+#restaurant-description {
+  padding: 0 20px;
 }
 #restaurant-photo-container {
   box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.36);
@@ -325,11 +328,17 @@ nav h1 a {
   font-size: 0.8em;
   color: #696464;  
 }
-span.checked {
+#reviews-list .fa {
+  padding-right: 3px;
+}
+#reviews-list span.checked {
   color: #f18200;
 }
 #restaurant-hours td {
   color: #666;
+}
+#restaurant-hours td:first-child {
+  font-weight: 700;
 }
 
 /* ====================== Styling Shadow Box ====================== */
