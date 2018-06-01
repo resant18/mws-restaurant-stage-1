@@ -76,7 +76,7 @@ nav h1 a {
     padding: 10px 0;
     list-style: none;
     background-color: #eee;    
-    max-width: 65%;
+    max-width: 960px;
     margin: 0 auto;    
 }
 
@@ -115,7 +115,7 @@ nav h1 a {
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {    
   margin: 20px auto 0;
-  max-width: 65%;
+  max-width: 960px;
   padding-left: 14px;
 }
 .filter-options h2 {
@@ -209,7 +209,7 @@ nav h1 a {
     "restaurant-info restaurant-photo-container"
     "restaurant-hours-wrapper map-container"
     "reviews-container reviews-container";
-  max-width: 65%;
+  max-width: 960px;
   margin: 0 auto;  
 }
 #restaurant-info {  
