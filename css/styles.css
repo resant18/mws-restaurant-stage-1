@@ -19,7 +19,7 @@ ul, li {
 }
 a {
 	color: orange;
-	text-decoration: none;
+  text-decoration: none;  
 }
 a:hover, a:focus {
 	color: #3397db;
@@ -55,6 +55,11 @@ article, aside, canvas, details, figcaption, figure, footer, hgroup, menu, nav, 
   text-align: center;
   text-transform: uppercase;
 }
+#footer a {
+  min-width: 48px;
+  min-height: 48px;
+  padding: 17px 0;
+}
 /* ====================== Navigation ====================== */
 nav {  
   width: 100%;  
@@ -70,6 +75,9 @@ nav h1 a {
   font-weight: 200;
   letter-spacing: 10px;
   line-height: 4.2em;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 16px 2px;
   text-transform: uppercase;
 }
 #breadcrumb {
@@ -182,7 +190,8 @@ nav h1 a {
   display: inline-block;
   font-size: 1.1em;
   margin: 15px 0 15px 0;
-  padding: 10px 15px;
+  min-width: 48px;
+  padding: 14px 15px;
   text-align: center;
   text-decoration: none;
 }
