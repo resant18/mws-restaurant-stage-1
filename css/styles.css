@@ -110,7 +110,9 @@ nav h1 a {
 }
 
 /* Add a color on mouse-over */
-#breadcrumb li a:hover {
+#breadcrumb li a:hover,
+#breadcrumb li a:focus
+ {
     color: #01447e;
     text-decoration: underline;
 }
@@ -231,7 +233,10 @@ nav h1 a {
   grid-area: restaurant-info;  
 }
 #restaurant-address {
+  display: inline;
+  font-size: 12pt;
   font-weight: 700;
+  margin: 10px 0px;
 }
 #restaurant-description {
   padding: 0 20px;
@@ -277,10 +282,6 @@ nav h1 a {
 #restaurant-img {
   width: 100%;
   height: 100%;
-}
-#restaurant-address {
-  font-size: 12pt;
-  margin: 10px 0px;
 }
 #restaurant-cuisine {
   background-color: #f18200;
