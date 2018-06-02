@@ -1,28 +1,132 @@
-# Mobile Web Specialist Certification Course
----
-#### _Three Stage Course Material Project - Restaurant Reviews_
+# Udacity Mobile Web Specialist Restaurant Review Project
 
-## Project Overview: Stage 1
+This is a case study project as part of Udacity Mobile Web Specialist Nanodegree which consist of three stages. The given initial code is gradually revised to achieve accesibility standard, more responsive. Moreover, offline first approach as a key characteristic of modern Progressive Web Application is also applied.   
 
-For the **Restaurant Reviews** projects, you will incrementally convert a static webpage to a mobile-ready web application. In **Stage One**, you will take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. You will also add a service worker to begin the process of creating a seamless offline experience for your users.
+## Getting Started
 
-### Specification
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-You have been provided the code for a restaurant reviews website. The code has a lot of issues. It’s barely usable on a desktop browser, much less a mobile device. It also doesn’t include any standard accessibility features, and it doesn’t work offline at all. Your job is to update the code to resolve these issues while still maintaining the included functionality. 
+### Prerequisites
 
-### What do I do from here?
+1. Python as Server
 
-1. In this folder, start up a simple HTTP server to serve up the site files on your local computer. Python has some simple tools to do this, and you don't even need to know Python. For most people, it's already installed on your computer. 
+2. Google MAP API
 
-In a terminal, check the version of Python you have: `python -V`. If you have Python 2.x, spin up the server with `python -m SimpleHTTPServer 8000` (or some other port, if port 8000 is already in use.) For Python 3.x, you can use `python3 -m http.server 8000`. If you don't have Python installed, navigate to Python's [website](https://www.python.org/) to download and install the software.
+3. GraphicsMagick as Image Processing Tool
 
-2. With your server running, visit the site: `http://localhost:8000`, and look around for a bit to see what the current experience looks like.
-3. Explore the provided code, and make start making a plan to implement the required features in three areas: responsive design, accessibility and offline use.
-4. Write code to implement the updates to get this site on its way to being a mobile-ready website.
+4. NPM Package
 
-### Note about ES6
+5. Hebrew
 
-Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code. As much as possible, try to maintain use of ES6 in any additional JavaScript you write. 
+6. Gulp as Automated Task Script
+
+### Installing
+
+1. If Python is not installed, navigate to Python's [website](https://www.python.org/) to download and install the software.
+
+2. In a terminal, check the version of Python you have: `python -V`. If you have Python 2.x, spin up the server with `python -m SimpleHTTPServer 8000` (or some other port, if port 8000 is already in use.) For Python 3.x, you can use `python3 -m http.server 8000`. 
+
+3. With your server running, visit the site: `http://localhost:8000`
+
+### Project Criteria
+
+There are three aspect are considered based on [Udacity Rubric Specification](https://review.udacity.com/#!/rubrics/1090/view)
+
+#### Responsive Design
+
+##### Layout Design Pattern
+I use CSS Grid to handle the whole presentation of front end layout. It is easier to CSS Grid rather than CSS Flexbox, since it is able to configure main content much easier in 2 dimensional ways, row and column. In index.html, CSS Grid is applied to main content to create auto-sizing restaurant list in columns. As mentioned in [CSS Tricks](https://css-tricks.com/auto-sizing-columns-css-grid-auto-fill-vs-auto-fit/) "More specifically, our ability to specify how many columns we want in the grid and then letting the browser handle the responsiveness of those columns for us, showing fewer columns on smaller viewport sizes, and more columns as the screen estate allows for more, without needing to write a single media query to dictate this responsive behavior". In restaurant.html, CSS Grid is applied in main content to change 2 columns for wider viewport to 1 column for narrow viewport as well change the order display.
+
+index.html
+
+```
+#restaurants-list {    
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 30px;
+    margin: 0 auto;
+    max-width: 960px;
+}
+```
+
+restaurant.html
+
+```
+.inside #maincontent {
+  display: grid;
+  grid-area: main-content;
+  grid-template-columns: repeat(2, [col] 50%);
+  grid-template-rows: repeat(4, [row] auto);
+  grid-template-areas:     
+    "restaurant-info restaurant-photo-container"
+    "restaurant-hours-wrapper map-container"
+    "reviews-container reviews-container";
+  /* other styles code*/
+}
+```
+Specify name for each area mentioned in *grid-template-areas*. For example:
+
+```
+#restaurant-info { 
+    /* other styles code*/
+    grid-area: restaurant-info;  
+}
+
+#restaurant-photo-container { 
+    /* other styles code*/
+    grid-area: restaurant-photo-container;  
+}
+```
+
+##### Breakpoint
+Only use 1 breakpoint, which is 768px as specified in media queries in responsive.css.
+
+```
+@media (max-width: 768px) {...}
+```
+
+##### Responsive Images
 
 
+##### Font Icons
+I use Font Awesome Icons to add map marker icon before the restaurant name in restaurant html. 
 
+```
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+```
+
+```
+<span class="fa fa-map-marker" aria-hidden></span> 
+```
+
+
+#### Accessibility
+
+#### Offline Ability
+
+
+## Built With
+
+* [CSS Grid](https://css-tricks.com/snippets/css/complete-guide-grid/) - The css layout system used
+* [GraphicsMagick]()
+
+
+## Contributing
+
+Please read [CONTRIBUTING.md]() for details on our code of conduct, and the process for submitting pull requests to us.
+
+
+## Authors
+
+* **Renata Santoso**
+* **Udacity** - *Initial work* - [Udacity](https://github.com/udacity/mws-restaurant-stage-1)
+ 
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md]() file for details
+
+## Acknowledgments
+
+* My mentor: 
