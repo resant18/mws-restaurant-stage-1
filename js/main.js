@@ -159,6 +159,7 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
+  more.alt = 'View Details';
   li.append(more)
 
   return li
@@ -176,4 +177,16 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     });
     self.markers.push(marker);
   });
+}
+
+/**
+ * Reset Neighborhood and Cuisine filter
+ */
+resetFilter = () => {
+  const neighborhoods = document.getElementById('neighborhoods-select');
+  const cuisines = document.getElementById('cuisines-select');
+
+  neighborhoods.options.selectedIndex = 0;
+  cuisines.options.selectedIndex = 0;
+  updateRestaurants();
 }

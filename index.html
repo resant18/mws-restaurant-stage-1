@@ -26,11 +26,12 @@
       <div class="filter-options" id="filter-options">
         <h2>Filter By</h2>
         <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
-          <option value="all">All Neighborhoods</option>
+          <option value="all" aria-labelledby="neighborhoods-select">All Neighborhoods</option>
         </select>
         <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
-          <option value="all">All Cuisines</option>
+          <option value="all" aria-labelledby="cuisines-select">All Cuisines</option>
         </select>
+        <button id="reset-filter" onClick=resetFilter()>Reset</button>
       </div>
       <ul id="restaurants-list"></ul>
     </section>
