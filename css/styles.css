@@ -368,3 +368,16 @@ nav h1 a {
   font-size: 1.2em;
 }
 
+/* ====================== Skip Link ====================== */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #BF1722;
+  color: white;
+  padding: 8px;
+  z-index: 100;
+}
+.skip-link:focus {
+  top: 0;
+}

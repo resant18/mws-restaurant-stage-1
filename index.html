@@ -10,6 +10,8 @@
 </head>
 
 <body>
+  <!-- Skip Link -->
+  <a href="#filter-options" class="skip-link">Skip map navigation</a>
   <header>
     <nav>
       <h1><a href="/">Restaurant Reviews</a></h1>
@@ -21,7 +23,7 @@
       <div id="map"></div>
     </section>
     <section>
-      <div class="filter-options">
+      <div class="filter-options" id="filter-options">
         <h2>Filter By</h2>
         <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
           <option value="all">All Neighborhoods</option>
