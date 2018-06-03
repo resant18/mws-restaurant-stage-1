@@ -12,6 +12,9 @@ body {
 	margin: 0;
 	position:relative;
 }
+ul {
+  list-style: none;
+}
 ul, li {
 	font-family: inherit;
 	font-size: inherit;
@@ -33,7 +36,7 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 0 20px;
 }
 article, aside, canvas, details, figcaption, figure, footer, hgroup, menu, nav, section {
-	display: block;
+  display: block;
 }
 #maincontent {
   background: url(../img/white_carbonfiber.png) repeat;
@@ -81,8 +84,7 @@ nav h1 a {
   text-transform: uppercase;
 }
 #breadcrumb {
-    padding: 10px 0;
-    list-style: none;
+    padding: 10px 0;    
     background-color: #eee;    
     max-width: 960px;
     margin: 0 auto;    
@@ -221,7 +223,6 @@ nav h1 a {
 #restaurant-address {
   display: inline;
   font-size: 12pt;
-  font-weight: 700;
   margin: 10px 0px;
 }
 #restaurant-description {
@@ -382,7 +383,7 @@ nav h1 a {
   margin-left: 5px;
   width: 80px;
 }
-
+/* ====================== General Styling ====================== */
 #reset-filter:hover,
 #reset-filter:focus,
 #restaurants-list li a:hover,
@@ -390,3 +391,9 @@ nav h1 a {
   background-color: #f4511e;  
 }
 
+.hidden {
+  display: none;
+}
+.bold {
+  font-weight: 700;
+}

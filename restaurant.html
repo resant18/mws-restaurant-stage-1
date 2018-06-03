@@ -16,14 +16,30 @@
   <!-- Beginning header -->
   <header>
     <!-- Beginning nav -->
-    <nav>
+    <nav role="navigation">
       <h1><a href="/">Restaurant Reviews</a></h1>
     </nav>
+    <!-- Beginning hamburger menu -->    
+    
+    <nav id="sidebarmenu" class="sidebar" role="navigation"> 
+        <a id="menuicon" href="javascript:void(0);" class="icon hidden" onclick="toggleSidebarMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"></path>
+            </svg>
+          </a> 
+      <ul id="sidebarmenulist" class="hidden">        
+        <li><a href="#restaurant-info" class="bold" onclick="toggleSidebarMenu()">Restaurant Info</a></li>
+        <li><a href="#map-container" class="bold" onclick="toggleSidebarMenu()">Restaurant Location</a></li>
+        <li><a href="#restaurant-hours-wrapper" class="bold" onclick="toggleSidebarMenu()">Restaurant Hours</a></li>   
+        <li><a href="#reviews-container" class="bold" onclick="toggleSidebarMenu()">Restaurant Reviews</a></li>                           
+      </ul>
+    </nav>
+    <!-- End hamburger menu -->
     <!-- Beginning breadcrumb -->
     <ul id="breadcrumb" aria-label="Breadcrumb">
       <li><a href="/">Home</a></li>
     </ul>
-    <!-- End breadcrumb -->
+    <!-- End breadcrumb -->    
     <!-- End nav -->
   </header>
   <!-- End header -->
@@ -34,7 +50,7 @@
       <div>
         <h2 id="restaurant-name"></h2>
         <span class="fa fa-map-marker" aria-hidden></span>        
-        <p id="restaurant-address"></p>
+        <p id="restaurant-address" class="bold"></p>
         <p id="restaurant-description"></p>
       </div>
     </section>
@@ -69,6 +85,20 @@
   <script src="js/dbhelper.js"></script>
   <!-- Main javascript file -->
   <script src="js/restaurant_info.js"></script> 
+  <!-- Toggle Sidebar Menu javascript file -->
+  <script>
+    function toggleSidebarMenu() {
+      const sidebarmenu = document.getElementById('sidebarmenulist');
+      const sidebarclass = document.getElementById('sidebarmenulist').className;
+
+      if (sidebarclass.includes('hidden')) {
+        sidebarmenu.classList.remove('hidden');
+      } else {
+        sidebarmenu.classList.add('hidden');
+      }
+
+    }
+  </script> 
   <!-- Google Maps -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
   <!-- End scripts -->

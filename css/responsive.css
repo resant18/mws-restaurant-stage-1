@@ -1,7 +1,7 @@
 @media (max-width: 768px) {
     body {
         line-height: 1.25em;
-    }
+    }    
     nav h1 a,
     .inside nav h1 a {
         font-size: 0.6em;
@@ -10,6 +10,42 @@
     #breadcrumb {
         padding: 10px 0; 
     }
+    #menu {
+        overflow: hidden;
+        background-color: #333;
+    }
+    /* ====================== Sidebar Navigation ====================== */       
+    #menuicon {        
+        display: block;
+        padding: 7px 9px;
+        position: absolute;
+        right: 0;
+    }
+    a#menuicon svg {
+        width: 30px;
+        fill:#000;
+    }
+    #sidebarmenulist {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        right: 0;
+        z-index: 3;
+        top: 100px;
+        background-color: #252831;
+        transition: cubic-bezier(0.22, 0.2, 0.03, 1) 0.35s;
+        box-shadow: 0 15px 25px 2px rgba(0,0,0,0.15), 0 5px 30px 5px rgba(0,0,0,0.1), 0 8px 10px -5px rgba(0,0,0,0.25);
+        width: 70%;
+        max-width: 230px
+    }    
+    #sidebarmenulist li a {
+        display: inline-block;
+        fill: #fff;        
+        box-shadow: 0 1px 0 #eceff338 inset;
+        padding: 20px 12px 20px 0;        
+        width: 100%;
+    }
+    /* ====================== Filter ====================== */
     .filter-options h2 {
         display: block;
     }
@@ -62,15 +98,6 @@
         width: 85%;
     }
 }
-
-/*
-@media all and (max-width: 1690px) { ...}
-@media all and (max-width: 1280px) { ...}
-@media all and (max-width: 980px) { ... }
-@media all and (max-width: 736px) { ... }
-@media all and (max-width: 480px) { ... }
-*/
-
 
 #restaurants-list {    
     display: grid;
