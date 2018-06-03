@@ -138,11 +138,30 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
 
+  // const image = document.createElement('img');
+  // image.className = 'restaurant-img';
+  // image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  // image.alt = restaurant.name;
+  // li.append(image);
+
+  // implement responsive image using picture element with breakpoint 789px
+  const picture = document.createElement('picture');
   const image = document.createElement('img');
+  const source1 = document.createElement('source');
+  const source2 = document.createElement('source');
+  const imageName = DBHelper.imageUrlForRestaurant(restaurant).replace(/\.[^/.]+$/, '');
   image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.src = `${imageName}_medium.jpg`;
   image.alt = restaurant.name;
-  li.append(image);
+  source1.media = '(max-width: 789px)';
+  source1.srcset = `${imageName}_small.jpg`;
+  source2.media = '(min-width: 790px)'
+  source2.srcset = `${imageName}_medium.jpg`;  
+  li.append(picture);
+  picture.append(source1);
+  picture.append(source2);
+  picture.append(image);
+
 
   const name = document.createElement('h3');
   name.innerHTML = restaurant.name;
