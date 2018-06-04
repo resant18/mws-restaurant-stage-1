@@ -336,6 +336,7 @@ nav h1 a {
 }
 #restaurant-hours td:first-child {
   font-weight: 700;
+  padding-right: 10px;
 }
 
 /* ====================== Styling Shadow Box ====================== */
@@ -358,7 +359,7 @@ nav h1 a {
 /* ====================== Skip Link ====================== */
 .skip-link {
   position: absolute;
-  top: -40px;
+  top: 0;
   left: 0;
   background: #f4511e;
   color: white;
