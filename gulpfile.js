@@ -11,12 +11,18 @@
  **/
 
  // require these gulp plugins by install using: npm install --save-dev [gulp-plugin-name]
+ /*eslint-env node */
 const gulp = require('gulp');
 const rename = require('gulp-rename');
 const imageResize = require('gulp-image-resize');
 const imageMin = require('gulp-imagemin');
+const sass = require('gulp-sass');
+const autoprefixer = require('gulp-autoprefixer');
+const browserSync = require('browser-sync').create();
+const eslint = require('gulp-eslint');
 
-gulp.task('resize-sm', function () {
+/*
+gulp.task('resize-sm', () => {
   return gulp.src('../img/*.{jpg,png}')
   .pipe(imageResize({
       width: 375,     
@@ -32,7 +38,7 @@ gulp.task('resize-sm', function () {
   .pipe(gulp.dest('../dist/img'));
 });        
     
-gulp.task('resize-md', function () {
+gulp.task('resize-md', () => {
   return gulp.src('../img/*.{jpg,png}')
   .pipe(imageResize({
     width: 480,     
@@ -48,7 +54,7 @@ gulp.task('resize-md', function () {
   .pipe(gulp.dest('../dist/img'));
 });
 
-gulp.task('resize-lg', function () {
+gulp.task('resize-lg', () => {
   return gulp.src('../img/*.{jpg,png}')
   .pipe(imageResize({
       width: 800,     
@@ -63,5 +69,57 @@ gulp.task('resize-lg', function () {
   .pipe(rename({ suffix: '_large', extname: '.jpg' }))
   .pipe(gulp.dest('../dist/img'));
 });
+*/
 
-gulp.task('resize', ['resize-sm', 'resize-md', 'resize-lg']);
+// Static Server + watching scss/html files
+//gulp.task('serve', ['sass', 'lint'], () => {
+gulp.task('serve', ['sass'], () => {
+  gulp.watch('./scss/*.scss', ['sass']);
+  gulp.watch('./*.html').on('change', browserSync.reload);
+  //gulp.watch('js/**/*.js', ['lint']);
+  browserSync.init({
+       server: "./"
+   });
+  
+
+  
+});
+
+
+// gulp.task('lint', () => {
+//     // ESLint ignores files with "node_modules" paths.
+//     // So, it's best to have gulp ignore the directory as well.
+//     // Also, Be sure to return the stream from the task;
+//     // Otherwise, the task may end before the stream has finished.
+//     return gulp.src(['**/*.js', '!node_modules/**'])
+//         // eslint() attaches the lint output to the "eslint" property
+//         // of the file object so it can be used by other modules.
+//         .pipe(eslint())
+//         // eslint.format() outputs the lint results to the console.
+//         // Alternatively use eslint.formatEach() (see Docs).
+//         .pipe(eslint.format())
+//         // To have the process exit with an error code (1) on
+//         // lint error, return the stream and pipe to failAfterError last.
+//         .pipe(eslint.failAfterError());
+// });
+ 
+
+// Compile sass into CSS & auto-inject into browsers
+gulp.task('sass', () => {
+  return gulp.src('./scss/**/*.scss')
+    .pipe(sass())
+    .pipe(sass().on('error', sass.logError))
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
+    .pipe(gulp.dest('./css'))
+    .pipe(browserSync.stream());
+});
+
+gulp.task('default', ['serve']);
+
+
+
+
+//gulp.task('resize', ['resize-sm', 'resize-md', 'resize-lg']);
