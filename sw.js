@@ -1,12 +1,10 @@
+// test1
 let staticCacheName = 'mws-static-v1';
 let contentImgsCache = 'mws-content-imgs';
 let allCaches = [
   staticCacheName,
   contentImgsCache
 ];
-
-
-
 
 let staticFilesName = [
   'index.html',
@@ -29,18 +27,18 @@ console.log(contentImgsCache);
 */
 
 self.addEventListener('install', function(event) {  
-  //console.log('Install service worker and cache static assets');
+  console.log('Install service worker and cache static assets');
   event.waitUntil(
     caches.open(staticCacheName)
     .then(function(cache) {
-      //console.log('Caching sucess');
+      console.log('Caching sucess'); //test
       return cache.addAll(staticFilesName);
     })
   );
 });
 
 self.addEventListener('activate', function(event) {
-  //console.log('Activating new service worker...');
+  console.log('Activating new service worker...');
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
@@ -68,4 +66,13 @@ self.addEventListener('fetch', function(event) {
       });
     })
   );
+});
+
+// this function will be called by statement worker.postMessage({action: 'skipWaiting'}); from the active page
+self.addEventListener('message', function(event) {
+  console.log('Perform skip waiting');
+  if (event.data.action === 'skipWaiting') {
+    console.log('skip waiting....');
+    self.skipWaiting();
+  }
 });
