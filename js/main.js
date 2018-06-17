@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
  * Fetch all neighborhoods and set their HTML.
  */
 fetchNeighborhoods = () => {
-  DBHelper.fetchNeighborhoods((error, neighborhoods) => {
+  IDBHelper.fetchNeighborhoods((error, neighborhoods) => {
     if (error) { // Got an error
       console.error(error);
     } else {
@@ -43,7 +43,7 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
  * Fetch all cuisines and set their HTML.
  */
 fetchCuisines = () => {
-  DBHelper.fetchCuisines((error, cuisines) => {
+  IDBHelper.fetchCuisines((error, cuisines) => {
     if (error) { // Got an error!
       console.error(error);
     } else {
@@ -96,7 +96,8 @@ updateRestaurants = () => {
   const cuisine = cSelect[cIndex].value;
   const neighborhood = nSelect[nIndex].value;
 
-  DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
+  console.log('calling from main');
+  IDBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
     if (error) { // Got an error!
       console.error(error);
     } else {
@@ -129,7 +130,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const span = document.getElementById('total-restaurant-list');
 
   span.innerHTML = `${restaurants.length} restaurant${(restaurants.length === 0) ? '' : 's'} found`;
-  restaurants.forEach(restaurant => {
+  restaurants.forEach(restaurant => {        
     ul.append(createRestaurantHTML(restaurant));
   });
   addMarkersToMap();
@@ -140,19 +141,13 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
  */
 createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
-
-  // const image = document.createElement('img');
-  // image.className = 'restaurant-img';
-  // image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  // image.alt = restaurant.name;
-  // li.append(image);
-
   // implement responsive image using picture element with breakpoint 789px
   const picture = document.createElement('picture');
   const image = document.createElement('img');
   const source1 = document.createElement('source');
   const source2 = document.createElement('source');
-  const imageName = DBHelper.imageUrlForRestaurant(restaurant).replace(/\.[^/.]+$/, '');
+  const imageName = IDBHelper.imageUrlForRestaurant(restaurant).replace(/\.[^/.]+$/, '');
+  
   image.className = 'restaurant-img';
   image.src = `${imageName}_medium.jpg`;
   image.alt = restaurant.name;
@@ -180,7 +175,7 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');  
   more.setAttribute('aria-label', `View restaurant details of ${restaurant.name}`);
   more.innerHTML = 'View Details';  
-  more.href = DBHelper.urlForRestaurant(restaurant);
+  more.href = IDBHelper.urlForRestaurant(restaurant);
   more.alt = 'View Details';
   li.append(more)
 
@@ -193,7 +188,7 @@ createRestaurantHTML = (restaurant) => {
 addMarkersToMap = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     // Add marker to the map
-    const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
+    const marker = IDBHelper.mapMarkerForRestaurant(restaurant, self.map);
     google.maps.event.addListener(marker, 'click', () => {
       window.location.href = marker.url
     });
