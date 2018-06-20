@@ -5,6 +5,7 @@ var map
 var markers = []
 
 /**
+ * Start ***
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -16,14 +17,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
  * Fetch all neighborhoods and set their HTML.
  */
 fetchNeighborhoods = () => {
-  IDBHelper.fetchNeighborhoods((error, neighborhoods) => {
-    if (error) { // Got an error
-      console.error(error);
-    } else {
-      self.neighborhoods = neighborhoods;
-      fillNeighborhoodsHTML();
-    }
-  });
+  IDBHelper.fetchNeighborhoods()
+    .then(neighborhoods => {    
+        self.neighborhoods = neighborhoods;
+        fillNeighborhoodsHTML();
+    })
+    .catch(err => {                    
+      const error = (`Fill neighborhoods data filter failed. Returned status of ${err}`);            
+      console.log(error);
+    });   
 }
 
 /**
@@ -43,14 +45,15 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
  * Fetch all cuisines and set their HTML.
  */
 fetchCuisines = () => {
-  IDBHelper.fetchCuisines((error, cuisines) => {
-    if (error) { // Got an error!
-      console.error(error);
-    } else {
+  IDBHelper.fetchCuisines()
+    .then(cuisines => {    
       self.cuisines = cuisines;
       fillCuisinesHTML();
-    }
-  });
+  })
+  .catch(err => {                    
+    const error = (`Fill cuisine data filter failed. Returned status of ${err}`);            
+    console.log(error);
+  });    
 }
 
 /**
@@ -67,7 +70,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
   });
 }
 
-/**
+/** Start ***
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
@@ -95,16 +98,15 @@ updateRestaurants = () => {
 
   const cuisine = cSelect[cIndex].value;
   const neighborhood = nSelect[nIndex].value;
-
-  console.log('calling from main');
-  IDBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
-    if (error) { // Got an error!
-      console.error(error);
-    } else {
+ 
+  IDBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood)
+    .then( (restaurants) => {
       resetRestaurants(restaurants);
-      fillRestaurantsHTML();
-    }
-  })
+      fillRestaurantsHTML();      
+    })
+    .catch(err => {                    
+      console.log(error);
+    }); 
 }
 
 /**

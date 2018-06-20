@@ -10,21 +10,12 @@ let staticFilesName = [
   'index.html',
   'restaurant.html',
   'css/styles.css',
-  'css/responsive.css',
-  'js/dbhelper.js',
+  'js/idb.js', 
+  //'js/idbhelper.js',
   'js/main.js',
   'js/restaurant_info.js',
-  'data/restaurants.json'
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' 
 ]
-
-// caching medium size images to provide image callback
-/*for (let i=1; i<=10; i++) {  
-  contentImgsCache.push(`${i}_medium.jpg`);
-}
-
-console.log('Image cache:');
-console.log(contentImgsCache);
-*/
 
 self.addEventListener('install', function(event) {  
   console.log('Install service worker and cache static assets');
@@ -39,6 +30,7 @@ self.addEventListener('install', function(event) {
 
 self.addEventListener('activate', function(event) {
   console.log('Activating new service worker...');
+  //TODO: create database in this event based on article: https://developers.google.com/web/ilt/pwa/live-data-in-the-service-worker#storing_data_with_indexeddb
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
