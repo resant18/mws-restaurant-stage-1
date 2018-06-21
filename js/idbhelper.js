@@ -1,5 +1,6 @@
 const IDB_NAME = 'mwsrestaurants';
 const IDB_VERSION = 1;
+const MAPBOX_TOKEN = 'pk.eyJ1IjoicmVzYW50IiwiYSI6ImNqaW5oNXpwMjA5ZnQzd3BiMmtrNWFueHYifQ.SA7IDB7hI_d6bT5RtGeQfg';
 
 class Restaurant {
   constructor(data) {
