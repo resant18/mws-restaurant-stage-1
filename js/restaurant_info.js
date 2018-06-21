@@ -4,7 +4,8 @@ var newMap;
 /**
  * Initialize map as soon as the page is loaded.
  */
-document.addEventListener('DOMContentLoaded', (event) => {  
+document.addEventListener('DOMContentLoaded', (event) => { 
+  console.log('Page is loaded'); 
   initMap();
 });
 
@@ -12,27 +13,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
  * Initialize leaflet map
  */
 initMap = () => {
-  fetchRestaurantFromURL((error, restaurant) => {
-    if (error) { // Got an error!
-      console.error(error);
-    } else {
-      self.newMap = L.map('map', {
-        center: [restaurant.latlng.lat, restaurant.latlng.lng],
-        zoom: 16,
-        scrollWheelZoom: false
-      });
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={mapboxToken}', {
-        mapboxToken: '<your MAPBOX API KEY HERE>',
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-          '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-          'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox.streets'    
-      }).addTo(newMap);
-      fillBreadcrumb();
-      IDBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-    }
-  });
+  fetchRestaurantFromURL()
+  .then( (restaurant) => {    
+    self.newMap = L.map('map', {
+      center: [restaurant.latlng.lat, restaurant.latlng.lng],
+      zoom: 16,
+      scrollWheelZoom: false
+    });
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={mapboxToken}', {
+      mapboxToken: MAPBOX_TOKEN,
+      maxZoom: 18,
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      id: 'mapbox.streets'    
+    }).addTo(newMap);
+    fillBreadcrumb();
+    IDBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+  })
+  .catch( (err) => {
+    console.log(err);
+  }); 
 }
 
 /*
@@ -114,6 +115,30 @@ fetchRestaurantFromURL = (callback) => {
 */
 
 /**
+ * Generate randomly Bacon ipsum (in place of Lorem ipsum) for restaurant description
+ */
+
+randomIpsumeGenerator = () => {
+  // These lines are taken from Bacon Ipsum: https://baconipsum.com/?paras=5&type=all-meat&start-with-lorem=1
+  const lines = [
+    'Bacon ipsum dolor amet jowl chuck pork loin. ',
+    'Ball tip burgdoggen alcatra cow tri-tip beef, swine buffalo brisket spare ribs pork. ',
+    'Landjaeger turkey filet mignon cow kielbasa sausage picanha sirloin. ',
+    'Kevin sirloin ham pancetta tenderloin, drumstick sausage short ribs cow leberkas chuck cupim shankle. '
+  ];
+
+  const random_quote = lines[Math.floor(Math.random() * lines.length)];  
+  
+  let
+    num = Math.floor(Math.random() * (6 - 3 + 1) + 3),    
+    generatedLines = ''
+  ;  
+  for (var i = 0; i < num; i++) { generatedLines += (random_quote + ' '); }
+  return generatedLines;
+}
+ 
+
+/**
  * Create restaurant HTML and add it to the webpage
  */
 fillRestaurantHTML = (restaurant = self.restaurant) => {
@@ -123,8 +148,9 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;
 
+  const restaurantDescription = randomIpsumeGenerator();
   const description = document.getElementById('restaurant-description');
-  description.innerHTML = restaurant.description;
+  description.innerHTML = restaurantDescription;
 
   const image = document.getElementById('restaurant-img');
   const picture = document.getElementById('restaurant-img-responsive');
