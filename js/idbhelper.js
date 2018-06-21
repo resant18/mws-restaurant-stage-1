@@ -150,20 +150,20 @@ class IDBHelper {
     return fetch(IDBHelper.DATABASE_URL)            //fetch from the network    
       .then( (response) => response.json())       
       .then( (restaurants) => {                     // copy to Restaurant object class 
-        console.log('restaurants='+restaurants);                           
+        //console.log('restaurants='+restaurants);                           
         return restaurants.map( (restaurant) => new Restaurant(restaurant));        
       })      
       .then( (restaurants) => {                      // save Restaurant objects class to database                       
         fetchedRestaurants = restaurants;       
-        console.log('Fetched restaurants='+fetchedRestaurants);
+        //console.log('Fetched restaurants='+fetchedRestaurants);
         let sequence = Promise.resolve();
         /*if (saveToDatabase)*/ 
         restaurants.forEach((restaurant) => sequence = sequence.then(() => IDBHelper.addToDatabase(restaurant)) );
-        console.log('Sequence='+sequence);        
+        //console.log('Sequence='+sequence);        
         return sequence;        
       })      
       .then(() => {        
-        console.log('return fetchedRestaurants= '+fetchedRestaurants);
+        //console.log('return fetchedRestaurants= '+fetchedRestaurants);
         return fetchedRestaurants;
       })      
       .catch(err => {                    
@@ -375,18 +375,18 @@ class IDBHelper {
   }
 
   /**
-   * Map marker for a restaurant.
+   * Leaflet Map marker for a restaurant.
    */
   static mapMarkerForRestaurant(restaurant, map) {
-    const marker = new google.maps.Marker({
-      position: restaurant.latlng,
-      title: restaurant.name,
-      url: IDBHelper.urlForRestaurant(restaurant),
-      map: map,
-      animation: google.maps.Animation.DROP}
-    );
+    // https://leafletjs.com/reference-1.3.0.html#marker  
+    const marker = new L.marker([restaurant.latlng.lat, restaurant.latlng.lng],
+      {title: restaurant.name,
+      alt: restaurant.name,
+      url: IDBHelper.urlForRestaurant(restaurant)
+      })
+      marker.addTo(newMap);
     return marker;
-  }
+  } 
 
 
 }; // End of Database helper class
