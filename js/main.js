@@ -165,14 +165,14 @@ createRestaurantHTML = (restaurant) => {
   image.src = `${imageName}_medium.jpg`;
   image.alt = restaurant.name;
   source1.media = '(max-width: 789px)';
-  source1.srcset = `${imageName}_small.jpg`;
+  source1.srcset = `${imageName}_small.webp`;
   source2.media = '(min-width: 790px)'
-  source2.srcset = `${imageName}_medium.jpg`;  
+  source2.srcset = `${imageName}_medium.webp`;  
   li.append(picture);
   picture.append(source1);
   picture.append(source2);
   picture.append(image);
-
+  
   const name = document.createElement('h3');  
   name.innerHTML = restaurant.name;
   li.append(name);

@@ -130,7 +130,7 @@ randomIpsumeGenerator = () => {
   const random_quote = lines[Math.floor(Math.random() * lines.length)];  
   
   let
-    num = Math.floor(Math.random() * (6 - 3 + 1) + 3),    
+    num = Math.floor(Math.random() * (3 - 2 + 1) + 2),    
     generatedLines = ''
   ;  
   for (var i = 0; i < num; i++) { generatedLines += (random_quote + ' '); }
@@ -161,9 +161,9 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   image.src = `${imageName}_medium.jpg`;
   image.alt = restaurant.name;
   source1.media = '(max-width: 789px)';
-  source1.srcset = `${imageName}_medium.jpg`;
+  source1.srcset = `${imageName}_medium.webp`;
   source2.media = '(min-width: 790px)'
-  source2.srcset = `${imageName}_large.jpg`;  
+  source2.srcset = `${imageName}_large.webp`;  
   picture.prepend(source2);
   picture.prepend(source1);  
 
