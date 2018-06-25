@@ -362,12 +362,12 @@ nav {
       &.revdate {
         font-size: 0.8em;
         color: #696464;  
-      }
+      }      
       &.revrating span.fa {
-        padding-right: 3px;
-        .checked {
-          color: $data-link-color-active;
-        }
+        padding-right: 3px;        
+      }
+      &.revrating span.checked {
+        color: $data-link-color-active;
       }      
     }
   }
