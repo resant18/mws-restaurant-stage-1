@@ -5,7 +5,7 @@ function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     // to improve boilerplate, delay the service worker registration until after load event fires on window  
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('../sw.js', {scope: '/'}).then((reg) => {  
+      navigator.serviceWorker.register('/sw.js', {scope: '/'}).then((reg) => {  
         // registration worked      
         console.log('Service worker registration succeeded. Scope is ' + reg.scope);      
 
