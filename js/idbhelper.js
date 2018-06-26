@@ -184,7 +184,7 @@ class IDBHelper {
     console.log('fetching restaurant based on id');
     return IDBHelper.fetchRestaurants()
       .then( (restaurants) => {    
-        console.log(restaurants);
+        //console.log(restaurants);
         const restaurant = restaurants.find(r => r.id == id);
         if (restaurant) { // Got the restaurant
           return Promise.resolve(restaurant);
@@ -280,11 +280,11 @@ class IDBHelper {
       const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
       // Remove duplicates from cuisines
       const uniqueCuisines = cuisines.filter((v, i) => cuisines.indexOf(v) == i)
-      return Promise.resolve(uniqueCuisines);        
+      return resolve(uniqueCuisines);        
     })
     .catch(err => {                    
       const error = (`Fetching cuisine data failed. Returned status of ${err}`);                    
-      return Promise.reject(error);
+      return reject(error);
     });
   }
 

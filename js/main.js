@@ -2,7 +2,7 @@ let restaurants,
   neighborhoods,
   cuisines
 var newMap
-var markers = []
+var markers = [];
 
 
 
@@ -11,18 +11,18 @@ var markers = []
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {  
-  initMap()
-    .then( () => {
-      fetchNeighborhoods(self.restaurants);
-      fetchCuisines(self.restaurants);
-    })  
-});
+  initMap();
+  updateRestaurants().then(restaurants => {       
+    fetchNeighborhoods(self.restaurants);
+    fetchCuisines(self.restaurants);
+  })  
+})
 
 /**
  * Fetch all neighborhoods and set their HTML.
  */
-fetchNeighborhoods = () => {
-  IDBHelper.fetchNeighborhoods()
+fetchNeighborhoods = (restaurants) => {
+  IDBHelper.fetchNeighborhoods(restaurants)
     .then(neighborhoods => {    
         self.neighborhoods = neighborhoods;
         fillNeighborhoodsHTML();
@@ -49,8 +49,8 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
 /**
  * Fetch all cuisines and set their HTML.
  */
-fetchCuisines = () => {
-  IDBHelper.fetchCuisines()
+fetchCuisines = (restaurants) => {
+  IDBHelper.fetchCuisines(restaurants)
     .then(cuisines => {    
       self.cuisines = cuisines;
       fillCuisinesHTML();
@@ -66,7 +66,6 @@ fetchCuisines = () => {
  */
 fillCuisinesHTML = (cuisines = self.cuisines) => {
   const select = document.getElementById('cuisines-select');
-
   cuisines.forEach(cuisine => {
     const option = document.createElement('option');
     option.innerHTML = cuisine;
@@ -93,13 +92,14 @@ initMap = () => {
     id: 'mapbox.streets'
   }).addTo(newMap);
 
-  updateRestaurants();
+  //updateRestaurants();
 }
 
 
 /**
  * Update page and map for current restaurants.
  */
+ /*
 updateRestaurants = () => {
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');
@@ -119,6 +119,35 @@ updateRestaurants = () => {
       console.log(error);
     }); 
 }
+*/
+
+/**
+ * Update page and map for current restaurants.
+ */
+updateRestaurants = () => {
+  return new Promise ( (resolve, reject) => {
+    const cSelect = document.getElementById('cuisines-select');
+    const nSelect = document.getElementById('neighborhoods-select');
+
+    const cIndex = cSelect.selectedIndex;
+    const nIndex = nSelect.selectedIndex;
+
+    const cuisine = cSelect[cIndex].value;
+    const neighborhood = nSelect[nIndex].value;
+
+    return IDBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood)
+      .then( (restaurants) => {
+        resetRestaurants(restaurants);
+        fillRestaurantsHTML();      
+        resolve(restaurants);
+      })
+      .catch(err => {                    
+        console.log(err);
+        reject(err);
+      }); 
+  });
+}
+
 
 /**
  * Clear current restaurants, their HTML and remove their map markers.
