@@ -1,4 +1,3 @@
-// test1
 let staticCacheName = 'mws-static-v1';
 let contentImgsCache = 'mws-content-imgs';
 let allCaches = [
@@ -7,24 +6,27 @@ let allCaches = [
 ];
 
 let staticFilesName = [
+  'dist/img/favicon.png',
+  'dist/img/favicon-196.png',  
+  'dist/img/favicon-512.png',  
   'index.html',
   'restaurant.html',
-  'css/styles.css',
-  'js/idb.js', 
+  'dist/css/styles.css',
+  'js/lib/idb.js', 
   //'js/idbhelper.js',
   'js/main.js',
   'js/restaurant_info.js',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' 
 ]
 
-self.addEventListener('install', function(event) {  
+self.addEventListener('install', (event) => {  
   console.log('Install service worker and cache static assets');
   event.waitUntil(
     caches.open(staticCacheName)
-    .then(function(cache) {
+    .then( (cache) => {
       console.log('Caching sucess'); //test
       return cache.addAll(staticFilesName);
-    })
+    })    
   );
 });
 
