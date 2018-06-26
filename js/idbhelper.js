@@ -1,6 +1,7 @@
 const IDB_NAME = 'mwsrestaurants';
 const IDB_VERSION = 1;
 const MAPBOX_TOKEN = 'pk.eyJ1IjoicmVzYW50IiwiYSI6ImNqaW5oNXpwMjA5ZnQzd3BiMmtrNWFueHYifQ.SA7IDB7hI_d6bT5RtGeQfg';
+const SERVER_URL = 'http://localhost:1337/restaurants';
 
 class Restaurant {
   constructor(data) {
@@ -35,7 +36,7 @@ class IDBHelper {
     };
     //console.log(window.location.origin);
     //return `${window.location.origin}/data/restaurants.json`;    
-    return `http://localhost:1337/restaurants`; 
+    return SERVER_URL; 
   };
 
   /**
@@ -174,46 +175,6 @@ class IDBHelper {
       }); 
   }
   
-
-  /**
-   * Fetch all restaurants.
-   */
-  /*
-  static fetchRestaurants(callback) {   
-    IDBHelper.idb.then(db => {
-      if (!db) return;
-      const tx = db.transaction('restaurants', 'readwrite');
-      const store = tx.objectStore('restaurants');       
-      store.getAll().then(data => {
-        if (data.length === 0) {
-          // if there is no data in database, fetch data from network ...
-          fetch(IDBHelper.DATABASE_URL) 
-          .then(response => response.json()) // returns a promise that resolves to the parsed JSON
-          .then(restaurants => {
-              // ...and then store in database
-              console.log('store in database');  
-              const tx = db.transaction('restaurants', 'readwrite');
-              const store = tx.objectStore('restaurants');            
-              restaurants.forEach(restaurant => {
-                store.put(restaurant);
-              });      
-              callback(null, restaurants);
-          })
-          .catch(err => {            
-            console.log('unable to fetch from network:');            
-            const error = (`Request failed. Returned status of ${err}`);            
-            callback(error, null);
-          }); 
-        } else {
-          // found data in database
-          console.log('get data from database');
-          callback(null, data);
-        }
-      })      
-    })
-  }
-  */
-
   /**
    * Fetch a restaurant by its ID.
    */
@@ -232,24 +193,6 @@ class IDBHelper {
         }
       });    
   }
-  
-/*
-  static fetchRestaurantById(id, callback) {
-    // fetch all restaurants with proper error handling.
-    IDBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        const restaurant = restaurants.find(r => r.id == id);
-        if (restaurant) { // Got the restaurant
-          callback(null, restaurant);
-        } else { // Restaurant does not exist in the database
-          callback('Restaurant does not exist', null);
-        }
-      }
-    });
-  }
-*/
 
   /**
    * This function is not used
@@ -311,54 +254,38 @@ class IDBHelper {
   /**
    * Fetch all neighborhoods with proper error handling.
    */
-  static fetchNeighborhoods() {
+  static fetchNeighborhoods(restaurants) {
     //console.log(IDBHelper.fetchRestaurants);
     // Fetch all restaurants
-    return IDBHelper.fetchRestaurants()
-      .then( (restaurants) => {      
-        // Get all neighborhoods from all restaurants
-        const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
-        // Remove duplicates from neighborhoods
-        const uniqueNeighborhoods = neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i)
-        return Promise.resolve(uniqueNeighborhoods);  
-      })    
-      .catch(err => {                    
-        const error = (`Fetching neighborhoods data failed. Returned status of ${err}`);                    
-        return Promise.reject(error);
-      }); 
-
-      /*
-      * Need to learn if this code below returns different results than the code at the top.
-      return IDBHelper.fetchRestaurants( (restaurants) => {
-        const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
-        // Remove duplicates from neighborhoods
-        const uniqueNeighborhoods = neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i)
-        return Promise.resolve(uniqueNeighborhoods);  
-      })
-      .catch(err => {                    
-        const error = (`Fetching neighborhoods data failed. Returned status of ${err}`);                    
-        return Promise.reject(error);
-      });
-      */ 
+    return new Promise( (resolve, reject) => {      
+      // Get all neighborhoods from all restaurants
+      const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
+      // Remove duplicates from neighborhoods
+      const uniqueNeighborhoods = neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i)
+      return resolve(uniqueNeighborhoods);  
+    })    
+    .catch( (err) => {                    
+      const error = (`Fetching neighborhoods data failed. Returned status of ${err}`);                    
+      return reject(error);
+    });   
   }
 
   /**
    * Fetch all cuisines with proper error handling.
    */
-  static fetchCuisines() {
+  static fetchCuisines(restaurants) {
     // Fetch all restaurants
-    return IDBHelper.fetchRestaurants()
-      .then ( (restaurants) => {        
-        // Get all cuisines from all restaurants
-        const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
-        // Remove duplicates from cuisines
-        const uniqueCuisines = cuisines.filter((v, i) => cuisines.indexOf(v) == i)
-        return Promise.resolve(uniqueCuisines);        
-      })
-      .catch(err => {                    
-        const error = (`Fetching cuisine data failed. Returned status of ${err}`);                    
-        return Promise.reject(error);
-      });
+    return new Promise( (resolve, reject) => {       
+      // Get all cuisines from all restaurants
+      const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
+      // Remove duplicates from cuisines
+      const uniqueCuisines = cuisines.filter((v, i) => cuisines.indexOf(v) == i)
+      return Promise.resolve(uniqueCuisines);        
+    })
+    .catch(err => {                    
+      const error = (`Fetching cuisine data failed. Returned status of ${err}`);                    
+      return Promise.reject(error);
+    });
   }
 
   /**
