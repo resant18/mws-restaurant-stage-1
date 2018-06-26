@@ -15,15 +15,21 @@
 const gulp = require('gulp');
 const rename = require('gulp-rename');
 const imageResize = require('gulp-image-resize');
-const imageMin = require('gulp-imagemin');
+const webp = require('gulp-webp');
 const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
+const concat = require('gulp-concat');
+const uglify = require('gulp-uglify-es').default;
+const pump = require('pump'); // To find the exact file, with line number of error when run minification task
 const browserSync = require('browser-sync').create();
-const eslint = require('gulp-eslint');
+/*const eslint = require('gulp-eslint');*/
 
-/*
+const excludeImageFile = 'white_carbonfiber.png';
+const excludeJsFile = 'dbhelper.js';
+
+
 gulp.task('resize-sm', () => {
-  return gulp.src('../img/*.{jpg,png}')
+  return gulp.src(['./img/*.{jpg,png}','!./img/'+excludeImageFile])
   .pipe(imageResize({
       width: 375,     
       height: 280,
@@ -33,13 +39,15 @@ gulp.task('resize-sm', () => {
       progressive: true, //Optional. Use progressive (interlace) scan for JPEG and PNG output. This typically reduces compression performance by 30% but results in an image that can be rendered sooner when decompressed.
       withMetadata: false //Optional. Include all metadata (ICC, EXIF, XMP) from the input image in the output image. The default behaviour is to strip all metadata.
   }))
-  .pipe(imageMin())
-  .pipe(rename({ suffix: '_small', extname: '.jpg' })) //extname does not have to be specified. 
-  .pipe(gulp.dest('../dist/img'));
+  .pipe(rename({ suffix: '_small', extname: '.jpg' }))
+  .pipe(gulp.dest('./dist/img'))
+  .pipe(webp())
+  .pipe(rename({extname: '.webp' }))
+  .pipe(gulp.dest('./dist/img'));
 });        
     
 gulp.task('resize-md', () => {
-  return gulp.src('../img/*.{jpg,png}')
+  return gulp.src(['./img/*.{jpg,png}','!./img/'+excludeImageFile])
   .pipe(imageResize({
     width: 480,     
     height: 360,
@@ -48,14 +56,16 @@ gulp.task('resize-md', () => {
     quality: 70,
     progressive: true,
     withMetadata: false
-  }))
-  .pipe(imageMin())
+  }))  
   .pipe(rename({ suffix: '_medium', extname: '.jpg' }))
-  .pipe(gulp.dest('../dist/img'));
+  .pipe(gulp.dest('./dist/img'))
+  .pipe(webp())
+  .pipe(rename({extname: '.webp' }))
+  .pipe(gulp.dest('./dist/img'));
 });
 
 gulp.task('resize-lg', () => {
-  return gulp.src('../img/*.{jpg,png}')
+  return gulp.src(['./img/*.{jpg,png}','!./img/'+excludeImageFile])
   .pipe(imageResize({
       width: 800,     
       height: 600,
@@ -64,26 +74,16 @@ gulp.task('resize-lg', () => {
       quality: 70,
       progressive: true,
       withMetadata: false
-  }))
-  .pipe(imageMin())
+  }))  
   .pipe(rename({ suffix: '_large', extname: '.jpg' }))
-  .pipe(gulp.dest('../dist/img'));
+  .pipe(gulp.dest('./dist/img'))
+  .pipe(webp())
+  .pipe(rename({extname: '.webp' }))
+  .pipe(gulp.dest('./dist/img'));
 });
-*/
 
-// Static Server + watching scss/html files
-//gulp.task('serve', ['sass', 'lint'], () => {
-gulp.task('serve', ['sass'], () => {
-  gulp.watch('./scss/*.scss', ['sass']);
-  gulp.watch('./*.html').on('change', browserSync.reload);
-  //gulp.watch('js/**/*.js', ['lint']);
-  browserSync.init({
-       server: "./"
-   });
-  
 
-  
-});
+
 
 
 // gulp.task('lint', () => {
@@ -103,23 +103,65 @@ gulp.task('serve', ['sass'], () => {
 //         .pipe(eslint.failAfterError());
 // });
  
+gulp.task('copy-img', () => {
+  return gulp.src(['img/favicon.png', 'img/' + excludeImageFile])
+    .pipe(gulp.dest('dist/img'));
+});
+
+// Copy HTML file to dist folder for production files
+gulp.task('copy-html', () => {
+  return gulp.src('*.html')
+    .pipe(gulp.dest('./dist'));
+});
 
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', () => {
   return gulp.src('./scss/**/*.scss')
-    .pipe(sass())
+    .pipe(sass({
+      outputStyle: 'compressed'
+    }))
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
     }))
-    .pipe(gulp.dest('./css'))
-    .pipe(browserSync.stream());
+    .pipe(gulp.dest('./dist/css'))
+    //.pipe(browserSync.stream());
 });
+
+gulp.task('scripts', () => {
+  return gulp.src(['js/app.js','sw.js','js/lib/idb.js','js/idbhelper.js','js/main.js','js/restaurant_info.js'])    
+    .pipe(concat('bundle.js'))
+    .pipe(gulp.dest('dist/js'));
+})
+
+gulp.task('scripts-dist', () => {
+  return gulp.src(['js/app.js','sw.js','js/lib/idb.js','js/idbhelper.js','js/main.js','js/restaurant_info.js'])    
+    .pipe(concat('bundle.min.js'))
+    .pipe(uglify())    
+    .pipe(gulp.dest('dist/js'));
+})
+
+gulp.task('uglify-error-debugging', function (cb) {
+  pump([
+    gulp.src('js/**/*.js'),
+    uglify(),
+    gulp.dest('dist/js')
+  ], cb);
+});
+
+// Static Server + watching scss/html files
+//gulp.task('serve', ['sass', 'lint'], () => {  
+  gulp.task('serve', ['sass', 'copy-html'], () => {
+    gulp.watch('./scss/*.scss', ['sass']);
+    gulp.watch('./*.html', ['copy-html']);
+    gulp.watch('./*.html').on('change', browserSync.reload);
+    //gulp.watch('js/**/*.js', ['lint']);
+    // browserSync.init({
+    //      server: "./"
+    //  });  
+  });
 
 gulp.task('default', ['serve']);
 
-
-
-
-//gulp.task('resize', ['resize-sm', 'resize-md', 'resize-lg']);
+gulp.task('resize', ['resize-sm', 'resize-md', 'resize-lg']);
