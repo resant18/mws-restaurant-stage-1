@@ -74,7 +74,7 @@ fetchRestaurantFromURL = () => {
     } else {
       IDBHelper.fetchRestaurantById(id)
         .then( (restaurant) => {
-          console.log(restaurant);
+          //console.log(restaurant);
           self.restaurant = restaurant;
           if (!restaurant) {
             console.error(error);
