@@ -4,7 +4,8 @@ var newMap;
 /**
  * Initialize map as soon as the page is loaded.
  */
-document.addEventListener('DOMContentLoaded', (event) => {  
+document.addEventListener('DOMContentLoaded', (event) => { 
+  //console.log('Page is loaded'); 
   initMap();
 });
 
@@ -12,48 +13,83 @@ document.addEventListener('DOMContentLoaded', (event) => {
  * Initialize leaflet map
  */
 initMap = () => {
-  fetchRestaurantFromURL((error, restaurant) => {
-    if (error) { // Got an error!
-      console.error(error);
-    } else {      
-      self.newMap = L.map('map', {
-        center: [restaurant.latlng.lat, restaurant.latlng.lng],
-        zoom: 16,
-        scrollWheelZoom: false
-      });
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={mapboxToken}', {
-        mapboxToken: '<your MAPBOX API KEY HERE>',
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-          '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-          'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox.streets'    
-      }).addTo(newMap);
-      fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(self.restaurant, self.newMap);
-    }
-  });
-}  
- 
-/* window.initMap = () => {
-  fetchRestaurantFromURL((error, restaurant) => {
-    if (error) { // Got an error!
-      console.error(error);
-    } else {
-      self.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
-        center: restaurant.latlng,
-        scrollwheel: false
-      });
-      fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-    }
-  });
-} */
+  fetchRestaurantFromURL()
+  .then( (restaurant) => {    
+    self.newMap = L.map('map', {
+      center: [restaurant.latlng.lat, restaurant.latlng.lng],
+      zoom: 16,
+      scrollWheelZoom: false
+    });
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={mapboxToken}', {
+      mapboxToken: MAPBOX_TOKEN,
+      maxZoom: 18,
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      id: 'mapbox.streets'    
+    }).addTo(newMap);
+    fillBreadcrumb();
+    IDBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+  })
+  .catch( (err) => {
+    console.log(err);
+  }); 
+}
+
+/*
+Old Google Map
+window.initMap = () => {  
+  fetchRestaurantFromURL()
+  .then( (restaurant) => {
+    
+    self.map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 16,
+      center: restaurant.latlng,
+      scrollwheel: false
+    });
+    fillBreadcrumb();
+    console.log(self.restaurant);
+    console.log(self.map);
+    IDBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+  })
+  .catch( (err) => {
+    console.log(err);
+  })  
+}
+*/
 
 /**
  * Get current restaurant from page URL.
  */
+
+fetchRestaurantFromURL = () => {
+  return new Promise( (resolve, reject) => {    
+    if (self.restaurant) { // restaurant already fetched!
+      resolve(self.restaurant);
+    }
+    const id = getParameterByName('id');    
+    if (!id) { // no id found in URL
+      error = 'No restaurant id in URL'
+      reject(error);
+    } else {
+      IDBHelper.fetchRestaurantById(id)
+        .then( (restaurant) => {
+          //console.log(restaurant);
+          self.restaurant = restaurant;
+          if (!restaurant) {
+            console.error(error);
+            reject(error);
+          }
+          fillRestaurantHTML();
+          resolve(restaurant);
+        });
+    }
+  })
+  
+}
+
+
+/*
 fetchRestaurantFromURL = (callback) => {
   if (self.restaurant) { // restaurant already fetched!
     callback(null, self.restaurant)
@@ -64,8 +100,9 @@ fetchRestaurantFromURL = (callback) => {
     error = 'No restaurant id in URL'
     callback(error, null);
   } else {
-    DBHelper.fetchRestaurantById(id, (error, restaurant) => {
+    IDBHelper.fetchRestaurantById(id, (error, restaurant) => {      
       self.restaurant = restaurant;
+      console.log('restaurant =' + self.restaurant);
       if (!restaurant) {
         console.error(error);
         return;
@@ -75,6 +112,31 @@ fetchRestaurantFromURL = (callback) => {
     });
   }
 }
+*/
+
+/**
+ * Generate randomly Bacon ipsum (in place of Lorem ipsum) for restaurant description
+ */
+
+randomIpsumeGenerator = () => {
+  // These lines are taken from Bacon Ipsum: https://baconipsum.com/?paras=5&type=all-meat&start-with-lorem=1
+  const lines = [
+    'Bacon ipsum dolor amet jowl chuck pork loin. ',
+    'Ball tip burgdoggen alcatra cow tri-tip beef, swine buffalo brisket spare ribs pork. ',
+    'Landjaeger turkey filet mignon cow kielbasa sausage picanha sirloin. ',
+    'Kevin sirloin ham pancetta tenderloin, drumstick sausage short ribs cow leberkas chuck cupim shankle. '
+  ];
+
+  const random_quote = lines[Math.floor(Math.random() * lines.length)];  
+  
+  let
+    num = Math.floor(Math.random() * (3 - 2 + 1) + 2),    
+    generatedLines = ''
+  ;  
+  for (var i = 0; i < num; i++) { generatedLines += (random_quote + ' '); }
+  return generatedLines;
+}
+ 
 
 /**
  * Create restaurant HTML and add it to the webpage
@@ -86,9 +148,24 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;
 
+  const restaurantDescription = randomIpsumeGenerator();
+  const description = document.getElementById('restaurant-description');
+  description.innerHTML = restaurantDescription;
+
   const image = document.getElementById('restaurant-img');
+  const picture = document.getElementById('restaurant-img-responsive');
+  const imageName = IDBHelper.imageUrlForRestaurant(restaurant).replace(/\.[^/.]+$/, '');
+  const source1 = document.createElement('source');
+  const source2 = document.createElement('source');    
   image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.src = `${imageName}_medium.jpg`;
+  image.alt = restaurant.name;
+  source1.media = '(max-width: 789px)';
+  source1.srcset = `${imageName}_medium.webp`;
+  source2.media = '(min-width: 790px)'
+  source2.srcset = `${imageName}_large.webp`;  
+  picture.prepend(source2);
+  picture.prepend(source1);  
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
@@ -126,7 +203,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
+  const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
 
@@ -149,22 +226,42 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
 createReviewHTML = (review) => {
   const li = document.createElement('li');
   const name = document.createElement('p');
+  name.classList.add('revname');
   name.innerHTML = review.name;
   li.appendChild(name);
 
-  const date = document.createElement('p');
+  const date = document.createElement('p');  
   date.innerHTML = review.date;
+  date.classList.add('revdate');
   li.appendChild(date);
 
   const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
+  
+  rating.innerHTML = `Rating: ${createRatingStar(review.rating)}`;
+  rating.classList.add('revrating');
   li.appendChild(rating);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
+  comments.classList.add('revcomments');
   li.appendChild(comments);
 
   return li;
+}
+
+createRatingStar = (rating) => {
+  const rating_max = 5;
+  let rating_html = '';
+  let i = 1;
+  while (i <= rating_max) {
+    if ((i <= rating) && (i <= rating_max)) {
+      rating_html += `<span class='fa fa-star checked'></span>`;
+    } else {
+      rating_html += `<span class='fa fa-star'></span>`;
+    }
+    i++;
+  }  
+  return rating_html;
 }
 
 /**
@@ -174,7 +271,8 @@ fillBreadcrumb = (restaurant=self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
-  breadcrumb.appendChild(li);
+  li.setAttribute('aria-current', 'page');
+  breadcrumb.appendChild(li);    
 }
 
 /**
